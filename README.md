@@ -1,1 +1,305 @@
 # Introduction-to-RAG
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Module 1: Introduction to RAG</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1f2e, #0d1117);
+      border-bottom: 1px solid #30363d;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #58a6ff;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: #8b949e;
+      font-size: 1.1rem;
+    }
+
+    header .badge {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: #1f6feb33;
+      border: 1px solid #1f6feb;
+      color: #58a6ff;
+      font-size: 0.85rem;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    section {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 28px;
+    }
+
+    section h2 {
+      font-size: 1.3rem;
+      color: #58a6ff;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    section h2 .icon { font-size: 1.2rem; }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      padding: 8px 0;
+      border-bottom: 1px solid #21262d;
+      color: #c9d1d9;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    ul li:last-child { border-bottom: none; }
+
+    ul li::before {
+      content: '▸';
+      color: #58a6ff;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .step {
+      background: #1f6feb22;
+      border: 1px solid #1f6feb55;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      color: #79c0ff;
+      text-align: center;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .arrow {
+      color: #58a6ff;
+      font-size: 1.2rem;
+      padding: 0 6px;
+      flex-shrink: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: #1f2937;
+      color: #58a6ff;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #30363d;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #21262d;
+      color: #c9d1d9;
+    }
+
+    td code {
+      background: #1f2937;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #79c0ff;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .highlight { color: #3fb950; font-weight: 600; }
+
+    pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 0.88rem;
+      color: #e6edf3;
+      margin-top: 12px;
+    }
+
+    .keyword { color: #ff7b72; }
+    .string { color: #a5d6ff; }
+    .comment { color: #8b949e; }
+    .func { color: #d2a8ff; }
+
+    .file-tree {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: #c9d1d9;
+      line-height: 2;
+    }
+
+    .file-tree .folder { color: #58a6ff; }
+    .file-tree .file { color: #3fb950; }
+
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: #8b949e;
+      font-size: 0.9rem;
+      border-top: 1px solid #30363d;
+      margin-top: 20px;
+    }
+
+    footer a { color: #58a6ff; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Introduction to RAG</h1>
+  <p>Module 1 · LLM Zoomcamp by DataTalks.Club</p>
+  <span class="badge">🎓 Homework Notebook</span>
+</header>
+
+<main>
+
+  <!-- Overview -->
+  <section>
+    <h2><span class="icon">📌</span> Overview</h2>
+    <p style="color:#c9d1d9">This module covers the fundamentals of Retrieval-Augmented Generation (RAG) and agentic RAG pipelines. We index course documents, build a RAG assistant, apply chunking to reduce token usage, and extend the pipeline into an agentic loop where the LLM decides when and what to search.</p>
+  </section>
+
+  <!-- Topics -->
+  <section>
+    <h2><span class="icon">📚</span> Topics Covered</h2>
+    <ul>
+      <li>Indexing documents with <code style="background:#1f2937;padding:2px 8px;border-radius:4px;color:#79c0ff">minsearch</code> using text and keyword fields</li>
+      <li>Building a RAG pipeline using <code style="background:#1f2937;padding:2px 8px;border-radius:4px;color:#79c0ff">RAGBase</code> and extending it with <code style="background:#1f2937;padding:2px 8px;border-radius:4px;color:#79c0ff">AgenticRAG</code></li>
+      <li>Chunking long documents with a sliding window for more precise retrieval</li>
+      <li>Measuring LLM token usage via the OpenAI Responses API</li>
+      <li>Building an agentic loop with <code style="background:#1f2937;padding:2px 8px;border-radius:4px;color:#79c0ff">toyaikit</code> where the LLM controls search</li>
+    </ul>
+  </section>
+
+  <!-- RAG Pipeline -->
+  <section>
+    <h2><span class="icon">⚙️</span> RAG Pipeline</h2>
+    <div class="pipeline">
+      <div class="step">Index Docs</div>
+      <div class="arrow">→</div>
+      <div class="step">Search Query</div>
+      <div class="arrow">→</div>
+      <div class="step">Build Prompt</div>
+      <div class="arrow">→</div>
+      <div class="step">LLM Answer</div>
+    </div>
+  </section>
+
+  <!-- Project Structure -->
+  <section>
+    <h2><span class="icon">📁</span> Project Structure</h2>
+    <div class="file-tree">
+      <div>📦 Introduction-to-RAG/</div>
+      <div>&nbsp;&nbsp;├── <span class="file">homework.ipynb</span> &nbsp;— Main homework notebook</div>
+      <div>&nbsp;&nbsp;├── <span class="file">rag_helper.py</span> &nbsp;&nbsp;— RAGBase and AgenticRAG classes</div>
+      <div>&nbsp;&nbsp;├── <span class="file">rag_ingest.py</span> &nbsp;&nbsp;— Document ingestion script</div>
+      <div>&nbsp;&nbsp;└── <span class="file">README.html</span> &nbsp;&nbsp;&nbsp;— This file</div>
+    </div>
+  </section>
+
+  <!-- Setup -->
+  <section>
+    <h2><span class="icon">🚀</span> Setup</h2>
+    <pre><span class="comment"># Install dependencies</span>
+uv add minsearch gitsource toyaikit openai
+
+<span class="comment"># Set your OpenAI API key</span>
+<span class="keyword">export</span> OPENAI_API_KEY=<span class="string">sk-...</span></pre>
+  </section>
+
+  <!-- Results -->
+  <section>
+    <h2><span class="icon">📊</span> Results Summary</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>Answer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Top result filename</td>
+          <td><code>01-agentic-rag/lessons/14-agentic-loop.md</code></td>
+        </tr>
+        <tr>
+          <td>Input tokens (full docs)</td>
+          <td><span class="highlight">7,126</span></td>
+        </tr>
+        <tr>
+          <td>Input tokens (chunked)</td>
+          <td><span class="highlight">2,309</span></td>
+        </tr>
+        <tr>
+          <td>Token reduction</td>
+          <td><span class="highlight">~3× fewer</span></td>
+        </tr>
+        <tr>
+          <td>Agent search calls</td>
+          <td><span class="highlight">~4</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  <p>Built by <a href="https://github.com/BenardMacoutMatur">Benard Macout Matur</a> · <a href="https://github.com/BenardMacoutMatur/llm-course-work">GitHub Repo</a> · <a href="https://github.com/DataTalksClub/llm-zoomcamp">LLM Zoomcamp</a></p>
+</footer>
+
+</body>
+</html>
